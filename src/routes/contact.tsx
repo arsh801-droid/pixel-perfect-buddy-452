@@ -31,7 +31,7 @@ function Contact() {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
     const r = schema.safeParse(data);
-    if (!r.success) return setError(r.error.issues[0].message);
+    if (!r.success) return setError(r.error.issues[0]?.message ?? "Invalid input");
     setError(null);
     const subject = encodeURIComponent(`Portfolio message from ${r.data.name}`);
     const body = encodeURIComponent(`${r.data.message}\n\n— ${r.data.name} (${r.data.email})`);

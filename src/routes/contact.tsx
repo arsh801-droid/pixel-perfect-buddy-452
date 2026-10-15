@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { z } from "zod";
+import { useServerFn } from "@tanstack/react-start";
 import { SectionTitle } from "@/components/SiteHeader";
+import { sendContactMessage } from "@/lib/contact.functions";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -26,20 +28,29 @@ const field = "w-full rounded-lg border border-input bg-muted/50 px-4 py-3 text-
 
 function Contact() {
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const send = useServerFn(sendContactMessage);
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget));
-    const r = schema.safeParse(data);
+    const form = e.currentTarget;
+    const r = schema.safeParse(Object.fromEntries(new FormData(form)));
     if (!r.success) return setError(r.error.issues[0]?.message ?? "Invalid input");
     setError(null);
-    const subject = encodeURIComponent(`Portfolio message from ${r.data.name}`);
-    const body = encodeURIComponent(`${r.data.message}\n\n— ${r.data.name} (${r.data.email})`);
-    window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+    setStatus("sending");
+    try {
+      await send({ data: r.data });
+      form.reset();
+      setStatus("sent");
+    } catch {
+      setStatus("idle");
+      setError("Could not send message. Please try again.");
+    }
   }
 
   const details = [
     { k: "email", v: EMAIL, href: `mailto:${EMAIL}` },
+    { k: "phone", v: "+91 96504 27694", href: "tel:+919650427694" },
     { k: "location", v: "Shaheen Bagh, New Delhi" },
     { k: "github", v: "arsh801-droid", href: "https://github.com/arsh801-droid" },
   ];
@@ -65,8 +76,9 @@ function Contact() {
           <input name="email" type="email" placeholder="you@example.com" maxLength={255} className={field} />
           <textarea name="message" rows={5} placeholder="Your message" maxLength={1000} className={field} />
           {error && <p className="text-sm text-destructive">{error}</p>}
-          <button type="submit" className="bg-gradient-bio shadow-glow w-full rounded-lg px-6 py-3 font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5">
-            Send message →
+          {status === "sent" && <p className="text-sm text-primary">Thanks! Your message was sent.</p>}
+          <button type="submit" disabled={status === "sending"} className="bg-gradient-bio shadow-glow w-full rounded-lg px-6 py-3 font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 disabled:opacity-60">
+            {status === "sending" ? "Sending…" : "Send message →"}
           </button>
         </form>
       </div>

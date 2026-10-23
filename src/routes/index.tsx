@@ -40,6 +40,7 @@ const skills = [
 function Index() {
   return (
     <div className="space-y-28">
+      <div className="relative">
       <section className="grid min-h-[75vh] items-center gap-12 md:grid-cols-[1.2fr_1fr]">
         <div className="fade-up">
           <h1 className="text-5xl font-bold leading-tight md:text-7xl">
@@ -71,10 +72,10 @@ function Index() {
           </span>
         </div>
       </section>
-
-      <p className="fade-up -mt-16 text-center font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
-        scroll ↓
-      </p>
+        <p className="fade-up absolute bottom-0 left-1/2 -translate-x-1/2 font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
+          scroll ↓
+        </p>
+      </div>
 
       <section className="fade-up">
         <p className="font-mono text-xs uppercase tracking-[0.3em] text-secondary">// focus</p>

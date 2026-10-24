@@ -1,14 +1,19 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 
 const links = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/skills", label: "Skills" },
-  { to: "/projects", label: "Projects" },
-  { to: "/contact", label: "Contact" },
+  { label: "Home", hash: null },
+  { label: "About", hash: "about" },
+  { label: "Skills", hash: "skills" },
+  { label: "Projects", hash: "projects" },
+  { label: "Contact", hash: "contact" },
 ] as const;
 
 export function SiteHeader() {
+  const navigate = useNavigate();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const hash = useRouterState({ select: (s) => s.location.hash });
+  const onHome = pathname === "/";
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4">
       <nav className="glass mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
@@ -16,18 +21,31 @@ export function SiteHeader() {
           &lt;arsh/&gt;
         </Link>
         <ul className="flex flex-wrap items-center gap-1 text-sm">
-          {links.map((l) => (
-            <li key={l.to}>
-              <Link
-                to={l.to}
-                activeOptions={{ exact: true }}
-                className="rounded-md px-3 py-1.5 text-muted-foreground transition-colors hover:text-primary"
-                activeProps={{ className: "rounded-md px-3 py-1.5 text-primary bg-muted" }}
-              >
-                {l.label}
-              </Link>
-            </li>
-          ))}
+          {links.map((l) => {
+            const active = onHome && (l.hash ? hash === l.hash : !hash);
+            return (
+              <li key={l.label}>
+                <Link
+                  to="/"
+                  hash={l.hash ?? undefined}
+                  className={`rounded-md px-3 py-1.5 transition-colors hover:text-primary ${active ? "text-primary bg-muted" : "text-muted-foreground"}`}
+                  onClick={(e) => {
+                    if (!onHome) return; // navigate to home; the home page scrolls to the section on arrival
+                    e.preventDefault();
+                    if (l.hash) {
+                      document.getElementById(l.hash)?.scrollIntoView({ behavior: "smooth" });
+                      navigate({ to: "/", hash: l.hash, replace: true });
+                    } else {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                      navigate({ to: "/", hash: undefined, replace: true });
+                    }
+                  }}
+                >
+                  {l.label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </header>

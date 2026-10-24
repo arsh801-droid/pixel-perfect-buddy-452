@@ -27,7 +27,7 @@ export function SiteHeader() {
               <li key={l.label}>
                 <Link
                   to="/"
-                  hash={l.hash ?? undefined}
+                  {...(l.hash ? { hash: l.hash } : {})}
                   className={`rounded-md px-3 py-1.5 transition-colors hover:text-primary ${active ? "text-primary bg-muted" : "text-muted-foreground"}`}
                   onClick={(e) => {
                     if (!onHome) return; // navigate to home; the home page scrolls to the section on arrival
@@ -37,7 +37,7 @@ export function SiteHeader() {
                       navigate({ to: "/", hash: l.hash, replace: true });
                     } else {
                       window.scrollTo({ top: 0, behavior: "smooth" });
-                      navigate({ to: "/", hash: undefined, replace: true });
+                      if (hash) navigate({ to: "/", replace: true });
                     }
                   }}
                 >

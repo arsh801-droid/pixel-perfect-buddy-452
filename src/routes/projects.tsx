@@ -5,10 +5,11 @@ export const Route = createFileRoute("/projects")({
   head: () => ({
     meta: [
       { title: "Projects — Mohd Arsh" },
-      { name: "description", content: "Proofly, an automated certificate generation and verification platform, and more in development." },
+      { name: "description", content: "Projects by Mohd Arsh — currently in development, with more on the way." },
       { property: "og:title", content: "Projects — Mohd Arsh" },
-      { property: "og:description", content: "Featuring Proofly: automated certificate generation and verification." },
+      { property: "og:description", content: "Projects by Mohd Arsh — currently in development." },
     ],
+
   }),
   component: Projects,
 });

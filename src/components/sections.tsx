@@ -74,33 +74,21 @@ export function SkillsSection() {
 export function ProjectsSection() {
   return (
     <section id="projects" className="scroll-mt-28">
-      <SectionTitle tag="projects" title="Selected Work" />
-      <div className="grid gap-6 md:grid-cols-3">
-        <article className="glass glow-border fade-up p-8 md:col-span-2">
-          <p className="font-mono text-xs text-primary">★ flagship</p>
-          <h2 className="mt-3 text-3xl font-bold">Proofly</h2>
-          <p className="mt-3 text-lg text-muted-foreground">
-            An automated certificate generation and verification platform — create certificates
-            in bulk and let anyone verify their authenticity instantly.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {["Automation", "Verification", "Web App"].map((t) => (
-              <span key={t} className="rounded-full border border-border px-3 py-1 font-mono text-xs text-secondary">{t}</span>
-            ))}
-          </div>
-          <a href="https://github.com/arsh801-droid" target="_blank" rel="noreferrer" className="mt-8 inline-block font-mono text-sm text-primary hover:underline">
-            view on github →
-          </a>
-        </article>
-        <article className="fade-up flex flex-col items-center justify-center rounded-[var(--radius)] border border-dashed border-border p-8 text-center" style={{ animationDelay: "0.15s" }}>
-          <span className="spin-slow inline-block font-mono text-3xl text-secondary">⟳</span>
-          <h2 className="mt-4 text-xl font-semibold">New projects</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Currently in development. Stay tuned.</p>
-        </article>
+      <SectionTitle tag="projects" title="Projects in Progress" />
+      <div className="glass glow-border fade-up flex flex-col items-center justify-center p-12 text-center md:p-16">
+        <span className="spin-slow inline-block font-mono text-3xl text-secondary">⟳</span>
+        <h2 className="mt-4 text-2xl font-semibold">New projects</h2>
+        <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
+          Currently in development. Something new is on the way — this space will fill up soon.
+        </p>
+        <a href="https://github.com/arsh801-droid" target="_blank" rel="noreferrer" className="mt-8 font-mono text-sm text-primary hover:underline">
+          see my github →
+        </a>
       </div>
     </section>
   );
 }
+
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),

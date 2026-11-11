@@ -1,17 +1,18 @@
 import { useEffect } from "react";
 import { createFileRoute, useRouterState } from "@tanstack/react-router";
 import hero from "@/assets/hero-bio.jpg";
-import { AboutSection, ContactSection, ProjectsSection, SkillsSection } from "@/components/sections";
+import { AboutSection, CertificatesSection, ContactSection, ProjectsSection, SkillsSection } from "@/components/sections";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Mohd Arsh — Aspiring Biotechnologist & Developer" },
-      { name: "description", content: "Bridging biological systems with technology — neuro-engineering, bioinformatics and software by Mohd Arsh." },
-      { property: "og:title", content: "Mohd Arsh — Biotechnologist & Developer" },
-      { property: "og:description", content: "Bridging biological systems with technology to create impactful solutions." },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "Mohd Arsh — Aspiring Biotechnologist & Developer",
+      description:
+        "Portfolio of Mohd Arsh: biotechnology, neuro-engineering, Python and bioinformatics — skills, projects and a contact form that sends straight from the site.",
+      path: "/",
+      image: "/og-share.jpg",
+    }),
   component: Index,
 });
 
@@ -66,6 +67,7 @@ function Index() {
 
       <AboutSection />
       <SkillsSection />
+      <CertificatesSection />
       <ProjectsSection />
       <ContactSection />
     </div>

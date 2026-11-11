@@ -4,6 +4,7 @@ const links = [
   { label: "Home", hash: null },
   { label: "About", hash: "about" },
   { label: "Skills", hash: "skills" },
+  { label: "Certificates", hash: "certificates" },
   { label: "Projects", hash: "projects" },
   { label: "Contact", hash: "contact" },
 ] as const;

@@ -1,15 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AboutSection } from "@/components/sections";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About — Mohd Arsh" },
-      { name: "description", content: "B.Tech Biotechnology student at Lovely Professional University, exploring neuro-engineering." },
-      { property: "og:title", content: "About Mohd Arsh" },
-      { property: "og:description", content: "Education and interests at the intersection of biology and technology." },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "About — Mohd Arsh",
+      description:
+        "B.Tech Biotechnology student at Lovely Professional University, exploring neuro-engineering where biology meets code.",
+      path: "/about",
+      image: "/og-about.jpg",
+    }),
   component: About,
 });
 

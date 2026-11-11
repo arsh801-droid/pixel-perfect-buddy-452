@@ -78,7 +78,7 @@ export function CertificatesSection() {
           <span className="inline-block font-mono text-3xl text-secondary">✦</span>
           <h2 className="mt-4 text-2xl font-semibold">Certificate coming soon</h2>
           <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-            This section is reserved for the certificate — it appears here as soon as it is added.
+            This section is reserved for the certificate — it will appear here once it's added.
           </p>
         </div>
       ) : (

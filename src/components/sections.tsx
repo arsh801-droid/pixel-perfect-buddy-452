@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import certificateAsset from "@/assets/build-with-meander-certificate.jpg.asset.json";
 import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
 import { SectionTitle } from "@/components/SiteHeader";
@@ -50,13 +51,23 @@ const skills = [
 
 type Certificate = {
   title: string;
+  program: string;
   issuer: string;
-  year: string;
+  date: string;
+  id: string;
   src: string;
 };
 
-// Drop the certificate image into src/assets and add one entry here per certificate.
-const certificates: Certificate[] = [];
+export const certificates: Certificate[] = [
+  {
+    title: "Certificate of Completion — Build with Meander™",
+    program: "LPU CODE-A-THON 2.0 Metaverse",
+    issuer: "Meander Software Private Limited",
+    date: "26 September 2026",
+    id: "MSPL-LMH-20260926-M338",
+    src: certificateAsset.url,
+  },
+];
 
 export function CertificatesSection() {
   const [open, setOpen] = useState<Certificate | null>(null);
@@ -82,7 +93,7 @@ export function CertificatesSection() {
           </p>
         </div>
       ) : (
-        <ul className="mt-4 grid gap-6 sm:grid-cols-2">
+        <ul className={"mt-4 grid gap-6 " + (certificates.length === 1 ? "mx-auto max-w-2xl" : "sm:grid-cols-2")}>
           {certificates.map((c, i) => (
             <li key={c.title}>
               <button
@@ -93,9 +104,11 @@ export function CertificatesSection() {
               >
                 <img src={c.src} alt={c.title} className="w-full rounded-lg border border-border" />
                 <p className="mt-3 text-lg font-semibold">{c.title}</p>
-                <p className="font-mono text-xs text-secondary">
-                  {c.issuer} · {c.year}
+                <p className="text-sm text-muted-foreground">{c.program}</p>
+                <p className="mt-1 font-mono text-xs text-secondary">
+                  {c.issuer} · {c.date}
                 </p>
+                <p className="font-mono text-[11px] text-muted-foreground">ID {c.id}</p>
               </button>
             </li>
           ))}
@@ -109,7 +122,29 @@ export function CertificatesSection() {
           onClick={() => setOpen(null)}
           className="fixed inset-0 z-60 flex items-center justify-center bg-background/85 p-6 backdrop-blur-sm"
         >
-          <img src={open.src} alt={open.title} className="max-h-[85vh] max-w-full rounded-lg border border-border" />
+          <div className="glass w-full max-w-6xl" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={open.src}
+              alt={open.title}
+              className="max-h-[78vh] w-full rounded-lg border border-border object-contain"
+            />
+            <div className="flex flex-wrap items-center justify-between gap-3 p-4">
+              <div>
+                <p className="text-base font-semibold">{open.title}</p>
+                <p className="text-sm text-muted-foreground">{open.program}</p>
+                <p className="font-mono text-xs text-secondary">
+                  {open.issuer} · {open.date} · ID {open.id}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setOpen(null)}
+                className="glass px-3 py-1.5 font-mono text-xs text-secondary"
+              >
+                close ✕
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </section>

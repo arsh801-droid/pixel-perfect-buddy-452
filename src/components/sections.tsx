@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
 import { SectionTitle } from "@/components/SiteHeader";
@@ -48,6 +48,70 @@ const skills = [
   { name: "Bioinformatics", level: "Basic", pct: 40, code: "bio", desc: "Sequence analysis and biological databases." },
 ];
 
+type Certificate = {
+  title: string;
+  issuer: string;
+  year: string;
+  src: string;
+};
+
+// Drop the certificate image into src/assets and add one entry here per certificate.
+const certificates: Certificate[] = [];
+
+export function Certifications() {
+  const [open, setOpen] = useState<Certificate | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  return (
+    <div className="mt-12">
+      <p className="font-mono text-xs uppercase tracking-[0.3em] text-secondary">// certifications</p>
+      {certificates.length === 0 ? (
+        <div className="glass mt-4 border-dashed p-10 text-center">
+          <p className="font-mono text-sm text-muted-foreground">your certificate will appear here</p>
+        </div>
+      ) : (
+        <ul className="mt-4 grid gap-6 sm:grid-cols-2">
+          {certificates.map((c, i) => (
+            <li key={c.title}>
+              <button
+                type="button"
+                onClick={() => setOpen(c)}
+                className="glass glow-border fade-up block w-full p-4 text-left"
+                style={{ animationDelay: `${0.12 * i}s` }}
+              >
+                <img src={c.src} alt={c.title} className="w-full rounded-lg border border-border" />
+                <p className="mt-3 text-lg font-semibold">{c.title}</p>
+                <p className="font-mono text-xs text-secondary">
+                  {c.issuer} · {c.year}
+                </p>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {open && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={open.title}
+          onClick={() => setOpen(null)}
+          className="fixed inset-0 z-60 flex items-center justify-center bg-background/85 p-6 backdrop-blur-sm"
+        >
+          <img src={open.src} alt={open.title} className="max-h-[85vh] max-w-full rounded-lg border border-border" />
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function SkillsSection() {
   return (
     <section id="skills" className="scroll-mt-28">
@@ -67,6 +131,7 @@ export function SkillsSection() {
           </div>
         ))}
       </div>
+      <Certifications />
     </section>
   );
 }

@@ -74,8 +74,12 @@ export function CertificatesSection() {
     <section id="certificates" className="scroll-mt-28">
       <SectionTitle tag="certificates" title="Certificates & Achievements" />
       {certificates.length === 0 ? (
-        <div className="glass mt-4 border-dashed p-10 text-center">
-          <p className="font-mono text-sm text-muted-foreground">your certificate will appear here</p>
+        <div className="glass glow-border fade-up flex flex-col items-center justify-center p-12 text-center md:p-16">
+          <span className="inline-block font-mono text-3xl text-secondary">✦</span>
+          <h2 className="mt-4 text-2xl font-semibold">Certificate coming soon</h2>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
+            This section is reserved for the certificate — it appears here as soon as it is added.
+          </p>
         </div>
       ) : (
         <ul className="mt-4 grid gap-6 sm:grid-cols-2">

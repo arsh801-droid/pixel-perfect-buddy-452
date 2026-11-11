@@ -67,6 +67,7 @@ function Index() {
 
       <AboutSection />
       <SkillsSection />
+      <CertificatesSection />
       <ProjectsSection />
       <ContactSection />
     </div>

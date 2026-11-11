@@ -1,15 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ContactSection } from "@/components/sections";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact — Mohd Arsh" },
-      { name: "description", content: "Get in touch with Mohd Arsh — email, GitHub and location in New Delhi." },
-      { property: "og:title", content: "Contact Mohd Arsh" },
-      { property: "og:description", content: "Reach out for collaborations in biotech and software." },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "Contact — Mohd Arsh",
+      description:
+        "Email, phone, GitHub and location for Mohd Arsh — send a message straight from the site.",
+      path: "/contact",
+      image: "/og-contact.jpg",
+    }),
   component: Contact,
 });
 

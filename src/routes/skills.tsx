@@ -1,15 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SkillsSection } from "@/components/sections";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/skills")({
-  head: () => ({
-    meta: [
-      { title: "Skills — Mohd Arsh" },
-      { name: "description", content: "Python, cellular biology and bioinformatics skills of Mohd Arsh." },
-      { property: "og:title", content: "Skills & Expertise — Mohd Arsh" },
-      { property: "og:description", content: "Python, cellular biology and bioinformatics." },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "Skills — Mohd Arsh",
+      description:
+        "Python, cellular biology and bioinformatics — the skill levels Mohd Arsh works with today.",
+      path: "/skills",
+      image: "/og-skills.jpg",
+    }),
   component: Skills,
 });
 

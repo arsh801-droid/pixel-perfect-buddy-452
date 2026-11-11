@@ -93,7 +93,7 @@ export function CertificatesSection() {
           </p>
         </div>
       ) : (
-        <ul className="mt-4 grid gap-6 sm:grid-cols-2">
+        <ul className={"mt-4 grid gap-6 " + (certificates.length === 1 ? "mx-auto max-w-2xl" : "sm:grid-cols-2")}>
           {certificates.map((c, i) => (
             <li key={c.title}>
               <button
@@ -122,15 +122,16 @@ export function CertificatesSection() {
           onClick={() => setOpen(null)}
           className="fixed inset-0 z-60 flex items-center justify-center bg-background/85 p-6 backdrop-blur-sm"
         >
-          <div className="glass w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
+          <div className="glass w-full max-w-6xl" onClick={(e) => e.stopPropagation()}>
             <img
               src={open.src}
               alt={open.title}
-              className="max-h-[72vh] w-full rounded-lg border border-border object-contain"
+              className="max-h-[78vh] w-full rounded-lg border border-border object-contain"
             />
             <div className="flex flex-wrap items-center justify-between gap-3 p-4">
               <div>
                 <p className="text-base font-semibold">{open.title}</p>
+                <p className="text-sm text-muted-foreground">{open.program}</p>
                 <p className="font-mono text-xs text-secondary">
                   {open.issuer} · {open.date} · ID {open.id}
                 </p>

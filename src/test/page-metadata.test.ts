@@ -9,11 +9,10 @@ import { Route as CertificatesRoute } from "@/routes/certificates";
 import { Route as ProjectsRoute } from "@/routes/projects";
 import { Route as ContactRoute } from "@/routes/contact";
 
-type Entry = {
-  path: string;
-  image: string;
-  route: { options: { head?: (ctx: never) => { meta?: Record<string, string>[]; links?: { rel: string; href: string }[] } } };
-};
+type Meta = { title?: string; name?: string; property?: string; content?: string };
+type Link = { rel: string; href: string };
+type Head = { meta?: Meta[]; links?: Link[] };
+type Entry = { path: string; image: string; route: { options: { head?: (ctx: never) => Head } } };
 
 const pages: Entry[] = [
   { path: "/", image: "/og-share.jpg", route: IndexRoute as Entry["route"] },
@@ -24,25 +23,30 @@ const pages: Entry[] = [
   { path: "/contact", image: "/og-contact.jpg", route: ContactRoute as Entry["route"] },
 ];
 
-function headOf(entry: Entry) {
+function headOf(entry: Entry): { meta: Meta[]; links: Link[] } {
   const head = entry.route.options.head?.(undefined as never);
   return { meta: head?.meta ?? [], links: head?.links ?? [] };
 }
 
-const byName = (meta: Record<string, string>[], name: string) =>
-  meta.find((m) => m.name === name)?.content;
-const byProp = (meta: Record<string, string>[], prop: string) =>
-  meta.find((m) => m.property === prop)?.content;
+const byName = (meta: Meta[], name: string) => meta.find((m) => m.name === name)?.content;
+const byProp = (meta: Meta[], prop: string) => meta.find((m) => m.property === prop)?.content;
+const byTitle = (meta: Meta[]) => meta.find((m) => m.title !== undefined)?.title;
 
 describe("Page metadata", () => {
   it("gives every page its own title and description", () => {
-    const titles = pages.map((p) => byName(headOf(p).meta, "title") ?? headOf(p).meta.find((m) => m.title)?.title);
-    const descriptions = pages.map((p) => byName(headOf(p).meta, "description"));
+    const titles: string[] = [];
+    const descriptions: string[] = [];
 
-    for (const [i, title] of titles.entries()) {
-      expect(title, `title for ${pages[i].path}`).toBeTruthy();
-      expect(descriptions[i], `description for ${pages[i].path}`).toBeTruthy();
+    for (const p of pages) {
+      const { meta } = headOf(p);
+      const title = byTitle(meta) ?? "";
+      const description = byName(meta, "description") ?? "";
+      expect(title, `title for ${p.path}`).toBeTruthy();
+      expect(description, `description for ${p.path}`).toBeTruthy();
+      titles.push(title);
+      descriptions.push(description);
     }
+
     expect(new Set(titles).size).toBe(pages.length);
     expect(new Set(descriptions).size).toBe(pages.length);
   });
@@ -61,7 +65,7 @@ describe("Page metadata", () => {
 
     const canonical = links.filter((l) => l.rel === "canonical");
     expect(canonical).toHaveLength(1);
-    expect(canonical[0].href).toBe(url);
+    expect(canonical[0]?.href).toBe(url);
   });
 
   it("ships every preview image it references", () => {

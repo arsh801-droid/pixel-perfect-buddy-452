@@ -58,7 +58,7 @@ type Certificate = {
 // Drop the certificate image into src/assets and add one entry here per certificate.
 const certificates: Certificate[] = [];
 
-export function Certifications() {
+export function CertificatesSection() {
   const [open, setOpen] = useState<Certificate | null>(null);
 
   useEffect(() => {
@@ -71,8 +71,8 @@ export function Certifications() {
   }, [open]);
 
   return (
-    <div className="mt-12">
-      <p className="font-mono text-xs uppercase tracking-[0.3em] text-secondary">// certifications</p>
+    <section id="certificates" className="scroll-mt-28">
+      <SectionTitle tag="certificates" title="Certificates & Achievements" />
       {certificates.length === 0 ? (
         <div className="glass mt-4 border-dashed p-10 text-center">
           <p className="font-mono text-sm text-muted-foreground">your certificate will appear here</p>
@@ -108,7 +108,7 @@ export function Certifications() {
           <img src={open.src} alt={open.title} className="max-h-[85vh] max-w-full rounded-lg border border-border" />
         </div>
       )}
-    </div>
+    </section>
   );
 }
 
@@ -131,7 +131,6 @@ export function SkillsSection() {
           </div>
         ))}
       </div>
-      <Certifications />
     </section>
   );
 }

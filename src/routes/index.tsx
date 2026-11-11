@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { createFileRoute, useRouterState } from "@tanstack/react-router";
 import hero from "@/assets/hero-bio.jpg";
-import { AboutSection, ContactSection, ProjectsSection, SkillsSection } from "@/components/sections";
+import { AboutSection, CertificatesSection, ContactSection, ProjectsSection, SkillsSection } from "@/components/sections";
 import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({

@@ -58,7 +58,7 @@ type Certificate = {
   src: string;
 };
 
-const certificates: Certificate[] = [
+export const certificates: Certificate[] = [
   {
     title: "Certificate of Completion — Build with Meander™",
     program: "LPU CODE-A-THON 2.0 Metaverse",
